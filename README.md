@@ -40,6 +40,7 @@ spec:
 
 ```
 
+
 This YAML file deploys a Knative service called "spring-boot-app" using the latest image of the Spring Boot application located on the Google Container Registry (gcr.io). It also sets the active Spring profile to "prod" and maps the container port 8080 to the service's port named "http". You can edit this file to match your specific requirements.
 
 #### You can use the following command to deploy the service into your cluster:
@@ -50,3 +51,34 @@ kubectl apply -f service.yaml
 ```
 
 It's also important to make sure that the Knative serving component is installed in your cluster and that your cluster has access to the image registry where your Spring Boot image is stored.
+
+
+
+#### Here is an example of a Dockerfile that can be used to build a container image for your Spring Boot application::
+
+
+```
+
+FROM openjdk:8-jdk-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the jar file to the container
+COPY target/*.jar app.jar
+
+# Expose the port that the application runs on
+EXPOSE 8080
+
+# Start the application
+CMD ["java", "-jar", "app.jar"]
+
+
+```
+
+
+This Dockerfile uses the openjdk:8-jdk-alpine image as the base image, sets the working directory to /app, copies the jar file produced by the build to the container, exposes port 8080, and runs the command java -jar app.jar to start the application.
+
+You need to change the COPY command as per your jar file name and also update the command which runs your jar file.
+
+Make sure you have a jar file of your spring boot application before building the image.
